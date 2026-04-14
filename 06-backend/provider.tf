@@ -11,7 +11,8 @@ terraform {
    bucket = "78s-remote-state"
    key = "expense-dev-backend"
    region = "us-east-1"
-   dynamodb_table = "daws78s-locking"
+   #dynamodb_table = "daws78s-locking"
+   use_lockfile = "daws78s-locking"
    
  }
 
