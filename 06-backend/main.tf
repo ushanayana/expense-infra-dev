@@ -59,7 +59,7 @@ module "records" {
       type    = "A"
       ttl     = 1
       records = [
-        resource.backend.private_ip
+        module.backend.private_ip
       ]
     },
     
