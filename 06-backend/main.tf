@@ -67,37 +67,37 @@ module "records" {
 
 }
 
-# resource "aws_ec2_instance_state" "backend" {
-#   instance_id = module.backend.id
-#   state       = "stopped"
-#   # stop the serever only when null resource provisioning is completed
-#   depends_on = [ null_resource.backend ]
-# }
+resource "aws_ec2_instance_state" "backend" {
+  instance_id = module.backend.id
+  state       = "stopped"
+  # stop the serever only when null resource provisioning is completed
+  depends_on = [ null_resource.backend ]
+}
 
-# resource "aws_ami_from_instance" "backend" {
-#   name               = "${var.project_name}-${var.environment}-${var.common_tags.Component}"
-#   source_instance_id = module.backend.id
-#   depends_on = [ aws_ec2_instance_state.backend ]
-# }
+resource "aws_ami_from_instance" "backend" {
+  name               = "${var.project_name}-${var.environment}-${var.common_tags.Component}"
+  source_instance_id = module.backend.id
+  depends_on = [ aws_ec2_instance_state.backend ]
+}
 
-# resource "null_resource" "backend_delete" {
-#     triggers = {
-#       instance_id = module.backend.id # this will be triggered everytime instance is created
-#     }
+resource "null_resource" "backend_delete" {
+    triggers = {
+      instance_id = module.backend.id # this will be triggered everytime instance is created
+    }
 
-#     connection {
-#         type     = "ssh"
-#         user     = "ec2-user"
-#         password = "DevOps321"
-#         host     = module.backend.private_ip
-#     }
+    connection {
+        type     = "ssh"
+        user     = "ec2-user"
+        password = "DevOps321"
+        host     = module.backend.private_ip
+    }
 
-#     provisioner "local-exec" {
-#         command = "aws ec2 terminate-instances --instance-ids ${module.backend.id}"
-#     } 
+    provisioner "local-exec" {
+        command = "aws ec2 terminate-instances --instance-ids ${module.backend.id}"
+    } 
 
-#     depends_on = [ aws_ami_from_instance.backend ]
-# }
+    depends_on = [ aws_ami_from_instance.backend ]
+}
 
 # resource "aws_lb_target_group" "backend" {
 #   name     = "${var.project_name}-${var.environment}-${var.common_tags.Component}"
