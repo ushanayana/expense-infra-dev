@@ -47,15 +47,25 @@ resource "null_resource" "backend" {
     } 
 }
 
-resource "aws_route53_record" "backend" {
-  zone_id = var.zone_id
-  name = "backend-${var.environment}.${var.zone_name}"
-  type = "A"
-  ttl = 1
-  records = [null_resource.backend.private_ip]
-  #if recprds already exists
-  allow_overwrite = true
- }
+module "records" {
+  source  = "terraform-aws-modules/route53/aws//modules/records"
+  version = "~> 2.0"
+
+  zone_name = var.zone_name
+
+  records = [
+    {
+      name    = "backend-${var.environment}"
+      type    = "A"
+      ttl     = 1
+      records = [
+        resource.backend.private_ip
+      ]
+    },
+    
+  ]
+
+}
 
 # resource "aws_ec2_instance_state" "backend" {
 #   instance_id = module.backend.id
