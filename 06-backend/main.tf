@@ -47,6 +47,16 @@ resource "null_resource" "backend" {
     } 
 }
 
+resource "aws_route53_record" "backend" {
+  zone_id = var.zone_id
+  name = "backend.${var.zone_name}"
+  type = "A"
+  ttl = 1
+  records = [aws_instance.backend.private_ip]
+  #if recprds already exists
+  allow_overwrite = true
+ }
+
 # resource "aws_ec2_instance_state" "backend" {
 #   instance_id = module.backend.id
 #   state       = "stopped"
