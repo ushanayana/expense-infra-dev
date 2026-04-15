@@ -211,3 +211,13 @@ resource "aws_security_group_rule" "vpn_https" {
   protocol          = "tcp"
   to_port           = 443
 }
+
+resource "aws_security_group_rule" "app_alb_bastion" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  source_security_group_id = module.bastion.sg_id # source is where you are getting traffic from
+  security_group_id = module.app_alb.sg_id
+}
+
