@@ -1,0 +1,27 @@
+variable "project_name" {
+    
+    default = "expense"
+}
+
+variable "environment" {
+
+    default = "dev"
+}
+
+variable "common_tags" {
+    
+    default = {
+        project = "expense" 
+        environment = "dev" 
+        terraform = "true" 
+        Component = "backend"
+    } 
+}
+
+variable "zone_name" {
+  default = "daws78s.shop"
+}
+
+variable "zone_id" {
+    default = "Z02504593KYJCKDGD1K54"
+}
